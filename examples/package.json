@@ -1,0 +1,11 @@
+{
+  "name": "@atago/examples",
+  "version": "1.0.0",
+  "description": "Examples for Atago game library",
+  "scripts": {
+    "example": "tsx example.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0"
+  }
+}

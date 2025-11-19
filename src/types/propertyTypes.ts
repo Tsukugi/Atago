@@ -1,0 +1,34 @@
+/**
+ * Property types for game units
+ */
+
+export interface IProperty<T = any> {
+  name: string;
+  value: T;
+  baseValue?: T;
+  modifiers?: PropertyModifier<T>[];
+  readonly?: boolean;
+}
+
+export type PropertyModifier<T> = {
+  source: string;
+  value: T | ((current: T) => T);
+  priority?: number; // Higher priority modifiers are applied later
+};
+
+export type PropertyValue = string | number | boolean | object | null;
+
+export interface IPropertyCollection {
+  [key: string]: IProperty;
+}
+
+export type PropertyType = 
+  | 'health' 
+  | 'attack' 
+  | 'defense' 
+  | 'speed' 
+  | 'mana' 
+  | 'level' 
+  | 'experience'
+  | 'position'
+  | 'custom';

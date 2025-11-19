@@ -1,0 +1,64 @@
+{
+  "name": "@atago/lib",
+  "version": "1.0.0",
+  "description": "Game unit management library for Atago game",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write src",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "game",
+    "units",
+    "properties",
+    "typescript",
+    "gamedev"
+  ],
+  "author": "Atago Game Library",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/Atago"
+  },
+  "bugs": {
+    "url": "https://github.com/username/Atago/issues"
+  },
+  "homepage": "https://github.com/username/Atago#readme",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vitest/ui": "^1.0.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "^3.1.1",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.6.2"
+  }
+}
