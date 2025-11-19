@@ -1,5 +1,5 @@
 {
-  "name": "@atago/lib",
+  "name": "@atsu/atago",
   "version": "1.0.0",
   "description": "Game unit management library for Atago game",
   "main": "dist/index.js",

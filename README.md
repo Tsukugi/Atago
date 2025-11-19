@@ -5,13 +5,13 @@ A TypeScript library for managing game units with properties and modifiers.
 ## Installation
 
 ```bash
-npm install @atago/lib
+npm install @atsu/atago
 ```
 
 ## Basic Usage
 
 ```typescript
-import { BaseUnit, Property } from '@atago/lib';
+import { BaseUnit, Property } from '@atsu/atago';
 
 // Create a new unit
 const player = new BaseUnit('player-1', 'Hero', 'player');
@@ -87,7 +87,7 @@ new Property<T>(name: string, value: T, readonly: boolean = false)
 
 ### Example 1: Creating a Warrior Unit
 ```typescript
-import { BaseUnit } from '@atago/lib';
+import { BaseUnit } from '@atsu/atago';
 
 // Create a warrior unit
 const warrior = new BaseUnit('warrior-1', 'Brave Warrior', 'warrior');
@@ -113,7 +113,7 @@ console.log(`Warrior attack: ${warrior.getPropertyValue('attack')}`); // 36 (30 
 
 ### Example 2: Dynamic Property Modification
 ```typescript
-import { BaseUnit } from '@atago/lib';
+import { BaseUnit } from '@atsu/atago';
 
 const enemy = new BaseUnit('enemy-1', 'Goblin', 'enemy');
 
