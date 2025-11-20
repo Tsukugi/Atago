@@ -50,6 +50,12 @@ console.log(player.getPropertyValue('attack')); // 25 (20 + 5 from modifier)
 - Priority-based modifier application
 - Read-only property support
 
+### Character Traits
+- Boolean properties representing unit characteristics
+- Predefined common traits (honest, brave, jealous, etc.)
+- Support for custom character traits
+- Methods to add, remove, check, and retrieve traits
+
 ### Modifiers
 - Function-based modifiers that can calculate new values
 - Priority system for modifier application order
@@ -72,6 +78,10 @@ new BaseUnit(id: string, name: string, type: string, initialProperties?: IProper
 - `setProperty<T>(name: string, value: T, type?: PropertyType): void` - Set a property value
 - `addPropertyModifier<T>(propertyName: string, modifier: PropertyModifier<T>): void` - Add a modifier to a property
 - `removePropertyModifier(propertyName: string, source: string): void` - Remove a modifier from a property
+- `addTrait(trait: CharacterTrait): void` - Add a character trait to the unit
+- `removeTrait(trait: CharacterTrait): void` - Remove a character trait from the unit
+- `hasTrait(trait: CharacterTrait): boolean` - Check if the unit has a specific trait
+- `getTraits(): CharacterTrait[]` - Get all character traits of the unit
 - `update(deltaTime: number): void` - Update the unit and apply modifiers
 - `destroy(): void` - Clean up the unit
 
@@ -134,6 +144,33 @@ console.log(`Goblin speed: ${enemy.getPropertyValue('speed')}`); // 8
 enemy.removePropertyModifier('speed', 'potion');
 enemy.update(0);
 console.log(`Goblin speed after potion wears off: ${enemy.getPropertyValue('speed')}`); // 5
+```
+
+### Example 3: Character Traits
+```typescript
+import { BaseUnit } from '@atsu/atago';
+
+const npc = new BaseUnit('npc-1', 'Village Elder', 'npc');
+
+// Add character traits
+npc.addTrait('wise');
+npc.addTrait('honest');
+npc.addTrait('patient');
+
+// Check if the unit has specific traits
+console.log(`Is the elder honest? ${npc.hasTrait('honest')}`); // true
+console.log(`Is the elder greedy? ${npc.hasTrait('greedy')}`); // false
+
+// Get all traits of the unit
+console.log(`Elder's traits:`, npc.getTraits()); // ['wise', 'honest', 'patient']
+
+// Remove a trait
+npc.removeTrait('patient');
+console.log(`Elder's traits after removing patient:`, npc.getTraits()); // ['wise', 'honest']
+
+// A unit can have multiple different types of properties and traits simultaneously
+npc.setProperty('wisdom', 85);
+console.log(`Elder's wisdom: ${npc.getPropertyValue('wisdom')}`); // 85
 ```
 
 ## Development

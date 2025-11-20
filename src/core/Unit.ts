@@ -1,4 +1,4 @@
-import type { IUnit, IProperty, IPropertyCollection, PropertyType, PropertyModifier } from '../types';
+import type { IUnit, IProperty, IPropertyCollection, PropertyType, PropertyModifier, CharacterTrait } from '../types';
 import { Property } from './Property';
 
 export class BaseUnit implements IUnit {
@@ -96,6 +96,40 @@ export class BaseUnit implements IUnit {
         property.update();
       }
     });
+  }
+
+  // Character trait methods
+  /**
+   * Add a character trait to the unit
+   */
+  addTrait(trait: CharacterTrait): void {
+    this.setProperty(trait, true, 'trait');
+  }
+
+  /**
+   * Remove a character trait from the unit
+   */
+  removeTrait(trait: CharacterTrait): void {
+    delete this.properties[trait];
+  }
+
+  /**
+   * Check if the unit has a specific trait
+   */
+  hasTrait(trait: CharacterTrait): boolean {
+    const traitProperty = this.getProperty(trait);
+    return traitProperty ? traitProperty.value === true : false;
+  }
+
+  /**
+   * Get all character traits of the unit
+   */
+  getTraits(): CharacterTrait[] {
+    return Object.keys(this.properties).filter(key => {
+      // Check if the property value is a boolean and true (meaning it's an active trait)
+      const prop = this.properties[key];
+      return prop && typeof prop.value === 'boolean' && prop.value === true;
+    }) as CharacterTrait[];
   }
 
   /**

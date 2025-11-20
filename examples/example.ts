@@ -4,6 +4,7 @@
 
 import { BaseUnit } from '../src/core/Unit';
 import { Property } from '../src/core/Property';
+import { getTraitInfluence } from '../src/utils/traitUtils';
 
 // Create a player unit
 const player = new BaseUnit('player-1', 'Hero', 'player');
@@ -42,6 +43,30 @@ console.log('\n=== Player Stats with Equipment ===');
 console.log(`Health: ${player.getPropertyValue('health')}`);
 console.log(`Attack: ${player.getPropertyValue('attack')}`); // Should be 25 (20+5)
 console.log(`Defense: ${player.getPropertyValue('defense')}`); // Should be 13 (10+3)
+
+// Add character traits
+player.addTrait('brave');
+player.addTrait('honest');
+player.addTrait('diligent');
+
+console.log('\n=== Player Traits ===');
+console.log(`Brave: ${player.hasTrait('brave')}`); // true
+console.log(`Honest: ${player.hasTrait('honest')}`); // true
+console.log(`Diligent: ${player.hasTrait('diligent')}`); // true
+console.log(`All traits:`, player.getTraits());
+
+// Show how traits can influence stats
+console.log('\n=== Trait Influence ===');
+const braveInfluence = getTraitInfluence('brave');
+console.log('Brave trait influence:', braveInfluence);
+
+// Add more traits and demonstrate operations
+player.addTrait('curious');
+console.log('Added curious trait, all traits now:', player.getTraits());
+
+// Remove a trait
+player.removeTrait('diligent');
+console.log('After removing diligent, traits:', player.getTraits());
 
 // Add a level-based modifier (e.g., attack increases with level)
 player.addPropertyModifier('attack', {
@@ -84,7 +109,7 @@ player.update(1/60);
 console.log('\n=== Player Stats with Sword Again ===');
 console.log(`Attack: ${player.getPropertyValue('attack')}`); // Should be 35 again (25+10)
 
-console.log('\n=== All Properties ===');
+console.log('\n=== All Properties and Traits ===');
 Object.keys(player.properties).forEach(key => {
   const prop = player.getProperty(key);
   if (prop) {
