@@ -1,7 +1,9 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: ['src/index.ts'],
+  entry: {
+    atago: 'src/index.ts'
+  },
   format: ['cjs', 'esm', 'iife'], // CommonJS, ES Modules, and IIFE for browser
   outDir: 'dist',
   clean: true,

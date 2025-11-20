@@ -2,14 +2,14 @@
   "name": "@atsu/atago",
   "version": "1.0.0",
   "description": "Game unit management library for Atago game",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "main": "dist/atago.js",
+  "module": "dist/atago.mjs",
+  "types": "dist/atago.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/atago.mjs",
+      "require": "./dist/atago.js",
+      "types": "./dist/atago.d.ts"
     }
   },
   "files": [
