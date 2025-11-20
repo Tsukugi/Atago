@@ -46,3 +46,6 @@ coverage/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# AI generated files
+*.qwen/
