@@ -22,11 +22,30 @@ export class BaseUnit implements IUnit {
   }
 
   /**
-   * Get the value of a property by name
+   * Get the value of a property by name, returning undefined if the property doesn't exist
    */
   getPropertyValue<T = any>(name: string): T | undefined {
     const prop = this.getProperty<T>(name);
     return prop ? prop.value : undefined;
+  }
+
+  /**
+   * Get a property by name, throwing an error if the property doesn't exist
+   */
+  requireProperty<T = any>(name: string): IProperty<T> {
+    const prop = this.getProperty<T>(name);
+    if (!prop) {
+      throw new Error(`Property "${name}" does not exist`);
+    }
+    return prop;
+  }
+
+  /**
+   * Get the value of a property by name, throwing an error if the property doesn't exist
+   */
+  requirePropertyValue<T = any>(name: string): T {
+    const prop = this.requireProperty<T>(name);
+    return prop.value;
   }
 
   /**

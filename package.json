@@ -18,7 +18,8 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
     "lint": "eslint src --ext .ts",

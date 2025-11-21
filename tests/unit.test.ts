@@ -23,17 +23,17 @@ describe('BaseUnit', () => {
 
   it('should handle property modifiers', () => {
     unit.setProperty('attack', 50);
-    
+
     // Add a modifier that increases attack by 10
     unit.addPropertyModifier('attack', {
       source: 'buff',
       value: (current: number) => current + 10,
       priority: 1
     });
-    
+
     // For this test, we'll just check that the modifier is registered
     const attackProp = unit.getProperty('attack');
-    expect(attackProp?.modifiers.length).toBe(1);
+    expect(attackProp?.modifiers?.length).toBe(1);
   });
 
   it('should update properties properly', () => {
@@ -52,9 +52,34 @@ describe('BaseUnit', () => {
   it('should destroy properly', () => {
     unit.setProperty('health', 100);
     expect(unit.getPropertyValue<number>('health')).toBe(100);
-    
+
     unit.destroy();
     expect(unit.properties).toEqual({});
+  });
+
+  it('should return property with requireProperty when it exists', () => {
+    unit.setProperty('strength', 15);
+    const property = unit.requireProperty<number>('strength');
+    expect(property.value).toBe(15);
+    expect(property.name).toBe('strength');
+  });
+
+  it('should throw error with requireProperty when property does not exist', () => {
+    expect(() => {
+      unit.requireProperty('nonexistent');
+    }).toThrow('Property "nonexistent" does not exist');
+  });
+
+  it('should return property value with requirePropertyValue when it exists', () => {
+    unit.setProperty('defense', 20);
+    const value = unit.requirePropertyValue<number>('defense');
+    expect(value).toBe(20);
+  });
+
+  it('should throw error with requirePropertyValue when property does not exist', () => {
+    expect(() => {
+      unit.requirePropertyValue('missing');
+    }).toThrow('Property "missing" does not exist');
   });
 });
 

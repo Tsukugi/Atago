@@ -75,6 +75,8 @@ new BaseUnit(id: string, name: string, type: string, initialProperties?: IProper
 #### Methods
 - `getProperty<T>(name: string): IProperty<T> | undefined` - Get a property by name
 - `getPropertyValue<T>(name: string): T | undefined` - Get the value of a property by name
+- `requireProperty<T>(name: string): IProperty<T>` - Get a property by name, throws error if property doesn't exist
+- `requirePropertyValue<T>(name: string): T` - Get the value of a property by name, throws error if property doesn't exist
 - `setProperty<T>(name: string, value: T, type?: PropertyType): void` - Set a property value
 - `addPropertyModifier<T>(propertyName: string, modifier: PropertyModifier<T>): void` - Add a modifier to a property
 - `removePropertyModifier(propertyName: string, source: string): void` - Remove a modifier from a property
@@ -172,6 +174,46 @@ console.log(`Elder's traits after removing patient:`, npc.getTraits()); // ['wis
 npc.setProperty('wisdom', 85);
 console.log(`Elder's wisdom: ${npc.getPropertyValue('wisdom')}`); // 85
 ```
+
+## Running Examples
+
+The repository includes feature-specific examples demonstrating the library's functionality:
+
+### Basic Features
+
+1. **Basic Properties**: Shows how to set and get properties on game units
+   ```bash
+   npx tsx examples/feature_basic_properties.ts
+   ```
+
+2. **Property Modifiers**: Demonstrates how to add and use dynamic property modifiers with priorities
+   ```bash
+   npx tsx examples/feature_property_modifiers.ts
+   ```
+
+3. **Character Traits**: Shows how to add, remove, and check character traits that represent personality characteristics
+   ```bash
+   npx tsx examples/feature_character_traits.ts
+   ```
+
+### Advanced Features
+
+4. **Trait Utilities**: Demonstrates utility functions for trait compatibility, conflict detection, and influence systems
+   ```bash
+   npx tsx examples/feature_trait_utilities.ts
+   ```
+
+5. **Non-undefined Methods**: Shows safe property access methods that throw errors instead of returning undefined
+   ```bash
+   npx tsx examples/feature_non_undefined_methods.ts
+   ```
+
+### Special Usage
+
+6. **Browser Usage**: Shows how to use the library via CDN or direct script inclusion in browsers
+   ```bash
+   node examples/feature_browser_usage.js
+   ```
 
 ## Development
 
