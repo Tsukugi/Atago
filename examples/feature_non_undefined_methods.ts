@@ -43,8 +43,12 @@ try {
 try {
   const requiredMana = player.requirePropertyValue('mana');
   console.log(`Required mana: ${requiredMana}`);
-} catch (error) {
-  console.log(`Error getting required mana: ${error.message}`); // Property "mana" does not exist
+} catch (error: unknown) {
+  if (error instanceof Error) {
+    console.log(`Error getting required mana: ${error.message}`); // Property "mana" does not exist
+  } else {
+    console.log(`Error getting required mana: ${String(error)}`);
+  }
 }
 
 // Example 3: Using getProperty vs requireProperty
@@ -62,31 +66,43 @@ console.log(`Mana property exists: ${!!manaProperty}`); // false
 try {
   const requiredHealthProp = player.requireProperty('health');
   console.log(`Required health property value: ${requiredHealthProp.value}`); // 100
-} catch (error) {
-  console.error('Error:', error.message);
+} catch (error: unknown) {
+  if (error instanceof Error) {
+    console.error('Error:', error.message);
+  } else {
+    console.error('Error:', error);
+  }
 }
 
 try {
   const requiredManaProp = player.requireProperty('mana');
   console.log(`Required mana property value: ${requiredManaProp.value}`);
-} catch (error) {
-  console.log(`Error getting required mana property: ${error.message}`); // Property "mana" does not exist
+} catch (error: unknown) {
+  if (error instanceof Error) {
+    console.log(`Error getting required mana property: ${error.message}`); // Property "mana" does not exist
+  } else {
+    console.log(`Error getting required mana property: ${String(error)}`);
+  }
 }
 
 // Example 4: Practical use case - safe access when you expect properties to exist
 console.log('\n--- Practical Use Cases ---');
 function applyWeaponBonus(unit: BaseUnit, weaponAttackBonus: number): void {
   console.log(`Applying weapon bonus of ${weaponAttackBonus}...`);
-  
+
   try {
     // Use requirePropertyValue when you expect the property to exist
     const currentAttack = unit.requirePropertyValue<number>('attack');
     const newAttack = currentAttack + weaponAttackBonus;
     unit.setProperty('attack', newAttack);
-    
+
     console.log(`Attack increased from ${currentAttack} to ${newAttack}`);
-  } catch (error) {
-    console.error(`Cannot apply weapon bonus: ${error.message}`);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Cannot apply weapon bonus: ${error.message}`);
+    } else {
+      console.error(`Cannot apply weapon bonus: ${String(error)}`);
+    }
   }
 }
 
@@ -98,12 +114,16 @@ function calculateDamage(attacker: BaseUnit, defender: BaseUnit): number {
   try {
     const attackerAttack = attacker.requirePropertyValue<number>('attack');
     const defenderDefense = defender.requirePropertyValue<number>('defense');
-    
+
     // Calculate damage (simplified)
     const baseDamage = Math.max(1, attackerAttack - defenderDefense);
     return baseDamage;
-  } catch (error) {
-    console.error(`Cannot calculate damage: ${error.message}`);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Cannot calculate damage: ${error.message}`);
+    } else {
+      console.error(`Cannot calculate damage: ${String(error)}`);
+    }
     return 0; // Return 0 if required properties don't exist
   }
 }

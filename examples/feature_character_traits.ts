@@ -50,16 +50,24 @@ console.log(`Patient: ${npc.getPropertyValue('patient')}`); // undefined (remove
 try {
   const wiseValue = npc.requirePropertyValue('wise');
   console.log(`Safe access to 'wise' trait: ${wiseValue}`); // true
-} catch (error) {
-  console.error('Trait not found:', error.message);
+} catch (error: unknown) {
+  if (error instanceof Error) {
+    console.error('Trait not found:', error.message);
+  } else {
+    console.error('Trait not found:', error);
+  }
 }
 
 // Try safe access for a non-existent trait (will throw error)
 try {
   const braveValue = npc.requirePropertyValue('brave');
   console.log(`Safe access to 'brave' trait: ${braveValue}`);
-} catch (error) {
-  console.log(`Safe access to non-existent 'brave' trait failed: ${error.message}`);
+} catch (error: unknown) {
+  if (error instanceof Error) {
+    console.log(`Safe access to non-existent 'brave' trait failed: ${error.message}`);
+  } else {
+    console.log(`Safe access to non-existent 'brave' trait failed: ${String(error)}`);
+  }
 }
 
 // Example of how traits might influence gameplay
