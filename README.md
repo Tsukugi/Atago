@@ -49,6 +49,7 @@ console.log(player.getPropertyValue('attack')); // 25 (20 + 5 from modifier)
 - Base values with modifier support
 - Priority-based modifier application
 - Read-only property support
+- Distinction between baseValue and value - setProperty only mutates value, preserving baseValue for modifier calculations
 
 ### Character Traits
 - Boolean properties representing unit characteristics
@@ -148,6 +149,61 @@ enemy.update(0);
 console.log(`Goblin speed after potion wears off: ${enemy.getPropertyValue('speed')}`); // 5
 ```
 
+### Example 4: Property Base Values vs Current Values
+```typescript
+import { BaseUnit } from '@atsu/atago';
+
+const unit = new BaseUnit('unit-1', 'Test Unit', 'test');
+
+// Set initial property value
+unit.setProperty('health', 100);
+console.log(unit.getProperty('health')?.value);      // 100
+console.log(unit.getProperty('health')?.baseValue);  // 100
+
+// When you use setProperty, only the value changes, not the baseValue
+unit.setProperty('health', 120);
+console.log(unit.getProperty('health')?.value);      // 120
+console.log(unit.getProperty('health')?.baseValue);  // 100 (unchanged!)
+
+// Modifiers are applied to the baseValue, not the current value
+unit.addPropertyModifier('health', {
+  source: 'potion',
+  value: (current: number) => current + 10,
+  priority: 1
+});
+unit.update(0);
+
+// After applying modifiers to baseValue, the final value is calculated
+console.log(unit.getPropertyValue('health')); // 110 (baseValue + modifier, not current value + modifier)
+```
+
+### Example 5: Understanding Base Value Preservation
+```typescript
+import { BaseUnit } from '@atsu/atago';
+
+const archer = new BaseUnit('archer-1', 'Skilled Archer', 'archer');
+
+// Set base attack value
+archer.setProperty('attack', 20);
+console.log(`Base attack: ${archer.getProperty('attack')?.baseValue}`); // 20
+
+// Temporary buff changes the current value but not the base
+archer.setProperty('attack', 25);
+console.log(`Current attack: ${archer.getPropertyValue('attack')}`); // 25
+console.log(`Base attack: ${archer.getProperty('attack')?.baseValue}`); // Still 20!
+
+// Equipment bonus applies to the base value (20), not the current value (25)
+archer.addPropertyModifier('attack', {
+  source: 'bow',
+  value: (current: number) => current + 5,
+  priority: 1
+});
+archer.update(0);
+
+// Final attack = baseValue (20) + modifier (5) = 25
+console.log(`Final attack after modifiers: ${archer.getPropertyValue('attack')}`); // 25
+```
+
 ### Example 3: Character Traits
 ```typescript
 import { BaseUnit } from '@atsu/atago';
@@ -208,9 +264,16 @@ The repository includes feature-specific examples demonstrating the library's fu
    npx tsx examples/feature_non_undefined_methods.ts
    ```
 
+### Advanced Features
+
+6. **Property Base Values**: Demonstrates the distinction between value and baseValue, and how modifiers work with preserved base values
+   ```bash
+   npx tsx examples/feature_property_basevalue.ts
+   ```
+
 ### Special Usage
 
-6. **Browser Usage**: Shows how to use the library via CDN or direct script inclusion in browsers
+7. **Browser Usage**: Shows how to use the library via CDN or direct script inclusion in browsers
    ```bash
    node examples/feature_browser_usage.js
    ```

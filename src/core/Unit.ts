@@ -57,11 +57,8 @@ export class BaseUnit implements IUnit {
     }
 
     if (this.properties[name]) {
-      // Update existing property
+      // Update existing property value only, leave baseValue unchanged
       (this.properties[name] as IProperty<T>).value = value;
-      if ((this.properties[name] as IProperty<T>).baseValue !== undefined) {
-        (this.properties[name] as IProperty<T>).baseValue = value;
-      }
     } else {
       // Create new property
       this.properties[name] = new Property<T>(name, value);
