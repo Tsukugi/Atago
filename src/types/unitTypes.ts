@@ -12,6 +12,7 @@ export interface IUnit {
   requireProperty<T = any>(name: string): IProperty<T>;
   requirePropertyValue<T = any>(name: string): T;
   setProperty<T = any>(name: string, value: T, type?: PropertyType): void;
+  setBaseProperty<T = any>(name: string, baseValue: T, type?: PropertyType): void;
   addPropertyModifier<T = any>(propertyName: string, modifier: import('./propertyTypes').PropertyModifier<T>): void;
   removePropertyModifier(propertyName: string, source: string): void;
 

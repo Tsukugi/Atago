@@ -66,6 +66,24 @@ export class BaseUnit implements IUnit {
   }
 
   /**
+   * Update a property's base value (for permanent changes like training)
+   */
+  setBaseProperty<T = any>(name: string, baseValue: T, _type?: PropertyType): void {
+    if (this.properties[name]?.readonly) {
+      throw new Error(`Property "${name}" is readonly`);
+    }
+
+    if (this.properties[name]) {
+      // Update existing property's base value and also update the current value
+      (this.properties[name] as IProperty<T>).baseValue = baseValue;
+      (this.properties[name] as IProperty<T>).value = baseValue;
+    } else {
+      // Create new property with the base value
+      this.properties[name] = new Property<T>(name, baseValue);
+    }
+  }
+
+  /**
    * Add a modifier to a property
    */
   addPropertyModifier<T = any>(propertyName: string, modifier: PropertyModifier<T>): void {

@@ -78,7 +78,8 @@ new BaseUnit(id: string, name: string, type: string, initialProperties?: IProper
 - `getPropertyValue<T>(name: string): T | undefined` - Get the value of a property by name
 - `requireProperty<T>(name: string): IProperty<T>` - Get a property by name, throws error if property doesn't exist
 - `requirePropertyValue<T>(name: string): T` - Get the value of a property by name, throws error if property doesn't exist
-- `setProperty<T>(name: string, value: T, type?: PropertyType): void` - Set a property value
+- `setProperty<T>(name: string, value: T, type?: PropertyType): void` - Set a property value (temporary change, preserves baseValue for modifiers)
+- `setBaseProperty<T>(name: string, baseValue: T, type?: PropertyType): void` - Set a property's base value (permanent change)
 - `addPropertyModifier<T>(propertyName: string, modifier: PropertyModifier<T>): void` - Add a modifier to a property
 - `removePropertyModifier(propertyName: string, source: string): void` - Remove a modifier from a property
 - `addTrait(trait: CharacterTrait): void` - Add a character trait to the unit
@@ -204,7 +205,40 @@ archer.update(0);
 console.log(`Final attack after modifiers: ${archer.getPropertyValue('attack')}`); // 25
 ```
 
-### Example 3: Character Traits
+### Example 6: Temporary vs Permanent Changes
+```typescript
+import { BaseUnit } from '@atsu/atago';
+
+const warrior = new BaseUnit('warrior-1', 'Brave Warrior', 'warrior');
+
+// Initial base stats
+warrior.setProperty('health', 100);
+warrior.setProperty('strength', 15);
+
+// Temporary change (e.g., taking damage) - value changes, baseValue stays same
+warrior.setProperty('health', 60); // Warrior took damage
+console.log(`Health after damage: ${warrior.getProperty('health')?.value}`);      // 60
+console.log(`Health base: ${warrior.getProperty('health')?.baseValue}`);          // 100
+
+// Permanent change (e.g., training) - both value and baseValue change
+warrior.setBaseProperty('strength', 20); // Warrior trained and permanently stronger
+console.log(`Strength after training: ${warrior.getProperty('strength')?.value}`);    // 20
+console.log(`Strength base: ${warrior.getProperty('strength')?.baseValue}`);          // 20
+
+// Modifiers work with both approaches
+warrior.addPropertyModifier('health', {
+  source: 'potion',
+  value: (current: number) => current + 10,
+  priority: 1
+});
+
+warrior.update(0);
+
+// After applying modifiers to health (baseValue=100 + modifier=10), the value becomes 110
+console.log(`Health after potion: ${warrior.getPropertyValue('health')}`); // 110
+```
+
+### Example 4: Character Traits
 ```typescript
 import { BaseUnit } from '@atsu/atago';
 
@@ -271,9 +305,14 @@ The repository includes feature-specific examples demonstrating the library's fu
    npx tsx examples/feature_property_basevalue.ts
    ```
 
+7. **Temporary vs Permanent Changes**: Shows how to make temporary changes (like damage) vs permanent changes (like training) using setProperty vs setBaseProperty
+   ```bash
+   npx tsx examples/feature_base_vs_value_changes.ts
+   ```
+
 ### Special Usage
 
-7. **Browser Usage**: Shows how to use the library via CDN or direct script inclusion in browsers
+8. **Browser Usage**: Shows how to use the library via CDN or direct script inclusion in browsers
    ```bash
    node examples/feature_browser_usage.js
    ```
