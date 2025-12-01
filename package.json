@@ -36,16 +36,16 @@
     "typescript",
     "gamedev"
   ],
-  "author": "Atago Game Library",
+  "author": "Tsukugi <Tsukugi@proton.me>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/username/Atago"
+    "url": "https://github.com/Tsukugi/TakaoEngine.git"
   },
   "bugs": {
-    "url": "https://github.com/username/Atago/issues"
+    "url": "https://github.com/Tsukugi/TakaoEngine/issues"
   },
-  "homepage": "https://github.com/username/Atago#readme",
+  "homepage": "https://github.com/Tsukugi/TakaoEngine#readme",
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@typescript-eslint/eslint-plugin": "^7.18.0",

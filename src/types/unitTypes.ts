@@ -1,5 +1,18 @@
 import type { IProperty, IPropertyCollection, PropertyType } from './propertyTypes';
 
+// Basic position coordinates
+export interface IPosition {
+  x: number;
+  y: number;
+  z?: number; // Optional z-coordinate for 3D positioning
+}
+
+export interface IUnitPosition {
+  unitId: string;
+  mapId: string;
+  position: IPosition;
+}
+
 export interface IUnit {
   id: string;
   name: string;
