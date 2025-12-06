@@ -7,9 +7,9 @@
   "types": "dist/atago.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/atago.d.ts",
       "import": "./dist/atago.mjs",
-      "require": "./dist/atago.js",
-      "types": "./dist/atago.d.ts"
+      "require": "./dist/atago.js"
     }
   },
   "files": [
