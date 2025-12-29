@@ -1,17 +1,10 @@
-import type { IProperty, IPropertyCollection, PropertyType } from './propertyTypes';
-
-// Basic position coordinates
-export interface IPosition {
-  x: number;
-  y: number;
-  z?: number; // Optional z-coordinate for 3D positioning
-}
-
-export interface IUnitPosition {
-  unitId: string;
-  mapId: string;
-  position: IPosition;
-}
+import type {
+  IProperty,
+  IPropertyCollection,
+  PropertyType,
+  PropertyValue,
+  PropertyModifier
+} from './propertyTypes';
 
 export interface IUnit {
   id: string;
@@ -20,13 +13,13 @@ export interface IUnit {
   properties: IPropertyCollection;
 
   // Property management
-  getProperty<T = any>(name: string): IProperty<T> | undefined;
-  getPropertyValue<T = any>(name: string): T | undefined;
-  requireProperty<T = any>(name: string): IProperty<T>;
-  requirePropertyValue<T = any>(name: string): T;
-  setProperty<T = any>(name: string, value: T, type?: PropertyType): void;
-  setBaseProperty<T = any>(name: string, baseValue: T, type?: PropertyType): void;
-  addPropertyModifier<T = any>(propertyName: string, modifier: import('./propertyTypes').PropertyModifier<T>): void;
+  getProperty<T extends PropertyValue = PropertyValue>(name: string): IProperty<T> | undefined;
+  getPropertyValue<T extends PropertyValue = PropertyValue>(name: string): T | undefined;
+  requireProperty<T extends PropertyValue = PropertyValue>(name: string): IProperty<T>;
+  requirePropertyValue<T extends PropertyValue = PropertyValue>(name: string): T;
+  setProperty<T extends PropertyValue = PropertyValue>(name: string, value: T, type?: PropertyType): void;
+  setBaseProperty<T extends PropertyValue = PropertyValue>(name: string, baseValue: T, type?: PropertyType): void;
+  addPropertyModifier<T extends PropertyValue = PropertyValue>(propertyName: string, modifier: PropertyModifier<T>): void;
   removePropertyModifier(propertyName: string, source: string): void;
 
   // Lifecycle

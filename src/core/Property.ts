@@ -1,6 +1,8 @@
-import type { IProperty, PropertyModifier } from '../types';
+import type { IProperty, PropertyModifier, PropertyValue } from '../types';
 
-export class Property<T = any> implements IProperty<T> {
+export class Property<T extends PropertyValue = PropertyValue>
+  implements IProperty<T>
+{
   name: string;
   value: T;
   baseValue?: T;
@@ -19,7 +21,7 @@ export class Property<T = any> implements IProperty<T> {
    * Apply all modifiers to calculate the final value
    */
   calculateValue(): T {
-    let result: any = this.baseValue;
+    let result = this.baseValue as T;
 
     // Sort modifiers by priority (lower to higher)
     const sortedModifiers = [...this.modifiers].sort((a, b) =>

@@ -6,6 +6,7 @@ export { Property } from './core/Property';
 
 // Utilities
 export * from './utils/traitUtils';
+export * from './utils/typeGuards';
 
 // Types
 export * from './types/unitTypes';

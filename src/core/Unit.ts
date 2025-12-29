@@ -1,4 +1,12 @@
-import type { IUnit, IProperty, IPropertyCollection, PropertyType, PropertyModifier, CharacterTrait } from '../types';
+import type {
+  IUnit,
+  IProperty,
+  IPropertyCollection,
+  PropertyType,
+  PropertyModifier,
+  CharacterTrait,
+  PropertyValue,
+} from '../types';
 import { Property } from './Property';
 
 export class BaseUnit implements IUnit {
@@ -17,14 +25,18 @@ export class BaseUnit implements IUnit {
   /**
    * Get a property by name
    */
-  getProperty<T = any>(name: string): IProperty<T> | undefined {
-    return this.properties[name] as IProperty<T> | undefined;
+  getProperty<T extends PropertyValue = PropertyValue>(
+    name: string
+  ): IProperty<T> | undefined {
+    return this.properties[name] as unknown as IProperty<T> | undefined;
   }
 
   /**
    * Get the value of a property by name, returning undefined if the property doesn't exist
    */
-  getPropertyValue<T = any>(name: string): T | undefined {
+  getPropertyValue<T extends PropertyValue = PropertyValue>(
+    name: string
+  ): T | undefined {
     const prop = this.getProperty<T>(name);
     return prop ? prop.value : undefined;
   }
@@ -32,8 +44,10 @@ export class BaseUnit implements IUnit {
   /**
    * Get a property by name, throwing an error if the property doesn't exist
    */
-  requireProperty<T = any>(name: string): IProperty<T> {
-    const prop = this.getProperty<T>(name);
+  requireProperty<T extends PropertyValue = PropertyValue>(
+    name: string
+  ): IProperty<T> {
+    const prop = this.getProperty<T>(name) as unknown as IProperty<T>;
     if (!prop) {
       throw new Error(`Property "${name}" does not exist`);
     }
@@ -43,7 +57,9 @@ export class BaseUnit implements IUnit {
   /**
    * Get the value of a property by name, throwing an error if the property doesn't exist
    */
-  requirePropertyValue<T = any>(name: string): T {
+  requirePropertyValue<T extends PropertyValue = PropertyValue>(
+    name: string
+  ): T {
     const prop = this.requireProperty<T>(name);
     return prop.value;
   }
@@ -51,47 +67,66 @@ export class BaseUnit implements IUnit {
   /**
    * Set a property value
    */
-  setProperty<T = any>(name: string, value: T, _type?: PropertyType): void {
+  setProperty<T extends PropertyValue = PropertyValue>(
+    name: string,
+    value: T,
+    _type?: PropertyType
+  ): void {
     if (this.properties[name]?.readonly) {
       throw new Error(`Property "${name}" is readonly`);
     }
 
     if (this.properties[name]) {
       // Update existing property value only, leave baseValue unchanged
-      (this.properties[name] as IProperty<T>).value = value;
+      const existing = this.properties[name] as unknown as IProperty<T>;
+      existing.value = value;
     } else {
       // Create new property
-      this.properties[name] = new Property<T>(name, value);
+      this.properties[name] = new Property<T>(
+        name,
+        value
+      ) as unknown as IPropertyCollection[string];
     }
   }
 
   /**
    * Update a property's base value (for permanent changes like training)
    */
-  setBaseProperty<T = any>(name: string, baseValue: T, _type?: PropertyType): void {
+  setBaseProperty<T extends PropertyValue = PropertyValue>(
+    name: string,
+    baseValue: T,
+    _type?: PropertyType
+  ): void {
     if (this.properties[name]?.readonly) {
       throw new Error(`Property "${name}" is readonly`);
     }
 
     if (this.properties[name]) {
       // Update existing property's base value and also update the current value
-      (this.properties[name] as IProperty<T>).baseValue = baseValue;
-      (this.properties[name] as IProperty<T>).value = baseValue;
+      const existing = this.properties[name] as unknown as IProperty<T>;
+      existing.baseValue = baseValue;
+      existing.value = baseValue;
     } else {
       // Create new property with the base value
-      this.properties[name] = new Property<T>(name, baseValue);
+      this.properties[name] = new Property<T>(
+        name,
+        baseValue
+      ) as unknown as IPropertyCollection[string];
     }
   }
 
   /**
    * Add a modifier to a property
    */
-  addPropertyModifier<T = any>(propertyName: string, modifier: PropertyModifier<T>): void {
-    const property = this.properties[propertyName] as IProperty<T>;
+  addPropertyModifier<T extends PropertyValue = PropertyValue>(
+    propertyName: string,
+    modifier: PropertyModifier<T>
+  ): void {
+    const property = this.properties[propertyName] as unknown as IProperty<T>;
     if (!property) {
       throw new Error(`Property "${propertyName}" does not exist`);
     }
-    
+
     // Check if modifier with same source already exists, replace it
     const existingIndex = (property.modifiers || []).findIndex(m => m.source === modifier.source);
     if (existingIndex !== -1) {
